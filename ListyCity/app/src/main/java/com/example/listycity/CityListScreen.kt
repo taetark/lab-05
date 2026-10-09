@@ -32,6 +32,7 @@ fun CityListScreen(
     cities: List<City>,
     onAddCity: (City) -> Unit,
     onUpdateCity: (City, City) -> Unit,
+    onDeleteCity : (City) -> Unit, // Claude, Sonnet 5.5 How to put delete button
     modifier: Modifier = Modifier
 ) {
     var newCityName by remember { mutableStateOf("") }
@@ -153,6 +154,22 @@ fun CityListScreen(
                 ) {
                     Text("UPDATE CITY")
                 }
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    onClick = {
+                        val cityToDelete = selectedCity
+                        if (cityToDelete != null) {
+                            onDeleteCity(cityToDelete)
+                            selectedCity = null
+                            editedCityName = ""
+                            editedProvinceName = ""
+                        }
+                    }
+                ) {
+                    Text("Delete")
+                }
             }
         }
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -213,7 +230,8 @@ fun CityListScreenPreview() {
                 City("Calgary", "AB")
             ),
             onAddCity = {},
-            onUpdateCity = { _, _ -> }
+            onUpdateCity = { _, _ -> },
+            onDeleteCity = {}
         )
     }
 }
